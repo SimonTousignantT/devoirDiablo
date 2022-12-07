@@ -16,10 +16,13 @@ public class SpiderSpawner : MonoBehaviour
     private int m_SpiderSpawnFrequence = 60;
     [SerializeField]
     private int m_NBSpider = 3;
+    private bool m_spiderZIsSpawn = false;
+    private int m_spiderXIsSpawn = 0;
     // Start is called before the first frame update
     void Start()
     {
-    
+      /// les araigner se dirige automatiquement sur le player une fois qu'il sont instancier alors le les fait spawn a partir d'ici 
+      /// je prend la position du joueur et apres avoir parcourue une certaine distance je spawn de
        m_PlayerPos = m_Player.transform.position;
         m_NextPosSpawn.x = m_PlayerPos.x;
         m_NextPosSpawn.z = m_PlayerPos.z;
@@ -33,22 +36,36 @@ public class SpiderSpawner : MonoBehaviour
         {
 
             m_NextPosSpawn.x -= m_SpiderSpawnFrequence;
-            for(int i = 0; i <= m_NBSpider; i++  )
+            if (m_spiderXIsSpawn != 3)/// parce que le 3 ses la zone du boss XD
             {
-                Instantiate(m_Spider, new Vector3(m_PlayerPos.x - m_offset, m_PlayerPos.y, m_PlayerPos.z), Quaternion.identity);
+                for (int i = 0; i <= m_NBSpider; i++)
+                {
+                    Instantiate(m_Spider, new Vector3(m_PlayerPos.x - m_offset, m_PlayerPos.y, m_PlayerPos.z), Quaternion.identity);
+                }
+                m_spiderXIsSpawn++;
             }
-           
             
         }
         if (m_PlayerPos.z > m_NextPosSpawn.z)
         {
 
             m_NextPosSpawn.z += m_SpiderSpawnFrequence;
-            for (int i = 0; i <= m_NBSpider; i++)
+            if (m_spiderZIsSpawn == false)
             {
-                Instantiate(m_Spider, new Vector3(m_PlayerPos.x , m_PlayerPos.y, m_PlayerPos.z + m_offset), Quaternion.identity);
-            }
 
+
+                for (int i = 0; i <= m_NBSpider; i++)
+                {
+
+
+                    Instantiate(m_Spider, new Vector3(m_PlayerPos.x, m_PlayerPos.y, m_PlayerPos.z + m_offset), Quaternion.identity);
+                   
+
+
+
+                }
+                m_spiderZIsSpawn = true;
+            }
 
         }
 

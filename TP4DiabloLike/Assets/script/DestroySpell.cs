@@ -17,6 +17,8 @@ public class DestroySpell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /// je detruis le sort a partire d'un certain moment car sinon ses cheaté, on se ramasserai avec trop de boule teleguidé se qui pourait 
+        /// empecher le joueur de se deplacer et nuire au gameplay
         if(gameObject.transform.position.x < m_baseRef )
         {
             if(m_chronos > m_timer)

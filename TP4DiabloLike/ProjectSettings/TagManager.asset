@@ -6,18 +6,23 @@ TagManager:
   tags:
   - spider
   - playerSpell
+  - barrel
+  - egout
+  - Barrel
+  - PlayerSpell
+  - Spider
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - player
+  - Player
   - Water
   - UI
-  - spider
-  - playerSpell
-  - 
-  - 
-  - 
+  - Spider
+  - PlayerSpell
+  - Cadavre
+  - Egout
+  - Pont
   - 
   - 
   - 
