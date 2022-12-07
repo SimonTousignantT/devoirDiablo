@@ -12,7 +12,8 @@ public class Levier : MonoBehaviour
     private Vector3 m_rotateAxe;
     [SerializeField]
     private Pont m_pont;
-
+    [SerializeField]
+    AudioClip m_sound;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,12 +24,13 @@ public class Levier : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        ///abaisse le levier et envoie un orde d'activation au pont levie quand le joueur rentre en contact avc le levier
         if (m_collide == true)
         {
             gameObject.transform.RotateAround(m_socle,m_rotateAxe , 90);
             m_collide = false;
             m_pont.ActivateBridge();
+            gameObject.GetComponent<AudioSource>().PlayOneShot(m_sound);
         }
     }
     private void OnCollisionEnter(Collision collision)

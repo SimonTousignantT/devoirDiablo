@@ -12,8 +12,12 @@ public class Spider : MonoBehaviour
     private bool m_isDead = false;
     [SerializeField]
     private float m_timer = 1;
-    Vector3 m_deadPos;
-   
+    private Vector3 m_deadPos;
+    private bool m_haveRotate = false;
+    [SerializeField]
+    AudioClip m_dyingSpider;
+  
+    private bool m_isMyFirstDead = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,18 +27,38 @@ public class Spider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<NavMeshAgent>().SetDestination(m_player.transform.position);
+        /// envois lenemie direct sur le joueur
+        if(m_isDead == false)
+        {
+            GetComponent<NavMeshAgent>().SetDestination(m_player.transform.position);
+        }
         
-            Animator animator = GetComponent<Animator>();
-            animator.SetTrigger("walkSpider");
-            animator.SetBool("walkSpider", true);
+       
+        /// si laraigner rencontre un sort du player la tourne sur le dos pour faire genre quelle agonise , et la fait disparetre sont cadavre apres un certain temp
         if(m_isDead == true)
         {
-            GetComponent<NavMeshAgent>().SetDestination(m_deadPos);
+            if (m_isMyFirstDead == true)
+            {
+                GetComponent<AudioSource>().PlayOneShot(m_dyingSpider,20f);
+                m_isMyFirstDead = false;
+            }
+            
+            if (m_haveRotate == false)
+            {
+                gameObject.transform.Rotate(180, 0, 0);
+                m_haveRotate = true;
+                m_deadPos.y = gameObject.transform.position.y + 2;
+            }
+           
+            transform.position = m_deadPos;
+            
             m_chronos = m_chronos + Time.deltaTime;
-         
-          
-            gameObject.transform.Rotate(90, 0, 0);
+
+
+            Destroy(gameObject.GetComponent<NavMeshAgent>());
+            
+           
+
             if (m_chronos > m_timer )
             {
                 Destroy(gameObject);
@@ -45,16 +69,15 @@ public class Spider : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "playerSpell")
+        if(collision.collider.tag == "PlayerSpell")
         {
             Destroy(collision.gameObject);
             m_deadPos = this.gameObject.transform.position;
-           
+            gameObject.tag = "Player"; 
             
             m_isDead = true;
             
           
         }
     }
- 
 }

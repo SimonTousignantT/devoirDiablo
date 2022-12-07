@@ -15,7 +15,12 @@ public class Pont : MonoBehaviour
     private float m_chronos = 0;
     private bool m_bridgeIsActivate = false;
     private int m_angle = 0;
-
+    private bool m_soundIsActivate = false;
+    private bool m_endingSound = false;
+    [SerializeField]
+    AudioClip m_sound;
+    [SerializeField]
+    AudioClip m_soundEnding;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +31,14 @@ public class Pont : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /// abaise le pont levie quand le levier est activer
         if (m_bridgeIsActivate == true)
         {
+            if(m_bridgeIsActivate == false)
+            {
+                gameObject.GetComponent<AudioSource>().PlayOneShot(m_sound,20f);
+                m_soundIsActivate = true;
+            }
             if(m_chronos > m_pontVitesse)
             {
                 gameObject.transform.RotateAround(m_soclePos, m_rotateAxe, 1);
@@ -37,6 +48,10 @@ public class Pont : MonoBehaviour
                 {
                    
                     m_bridgeIsActivate = false;
+                    if(m_endingSound == false)
+                    {
+                        gameObject.GetComponent<AudioSource>().PlayOneShot(m_soundEnding, 10f);
+                    }
                 }
             }
             m_chronos += Time.deltaTime;
